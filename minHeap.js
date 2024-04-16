@@ -87,7 +87,7 @@ class MinHeap {
   get length() {
     return this.heap.length;
   }
-
+  //this method to clear the heap
   clear() {
     this.heap = [];
   }
