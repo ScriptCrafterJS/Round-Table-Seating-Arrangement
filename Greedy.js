@@ -3,13 +3,6 @@ const Node = require("./Node");
 const MinHeap = require("./minHeap");
 const data = require("./data");
 
-// const node = new Node("Anan", 0, null);
-// console.log(node.getPerson);
-
-// h(n) => percentage of hate
-// g(n) => x^2 => percentage^2
-/////////////////////////////////////////
-
 const graph = data.graph;
 let betweenFirstAndLast = 0;
 function greedySearch(firstPerson, lastPerson) {
@@ -25,9 +18,9 @@ function greedySearch(firstPerson, lastPerson) {
   frontier.insert(initialNode);
 
   let explored = new Set();
-
+  let currentNode = null;
   while (!frontier.isEmpty()) {
-    let currentNode = frontier.removeMin();
+    currentNode = frontier.removeMin();
     frontier.clear();
 
     let currentCost = currentNode.getCost;
@@ -35,44 +28,44 @@ function greedySearch(firstPerson, lastPerson) {
 
     explored.add(currentPerson);
 
-    if (currentPerson === lastPerson) {
-      return currentNode;
-    }
-
     let neighborsMap = graph.get(currentPerson).rest;
 
     for (let [neighborName, neighborCost] of neighborsMap) {
       if (!frontier.contains(neighborName) && !explored.has(neighborName)) {
-        const cost = neighborCost + currentCost;
-
-        const neighbor = new Node(
-          neighborName,
-          cost,
-          currentNode //the previous of the neighbor node
-        );
-        frontier.insert(neighbor);
+        if (neighborName !== lastPerson) {
+          const cost = neighborCost + currentCost;
+          const neighbor = new Node(
+            neighborName,
+            cost,
+            currentNode //the previous of the neighbor node
+          );
+          frontier.insert(neighbor);
+        }
       }
     }
   }
-
-  return { result: "FAILURE" };
+  return currentNode;
 }
 
-let firstPerson = "Fuad";
-let lastPerson = "Ahmed";
+let firstPerson = "Ahmed";
+let lastPerson = "Kamal";
 
 let result = greedySearch(firstPerson, lastPerson);
-printPath(result);
-
+//cost Between Final And BeforeFinal
+const cost = graph.get(result.getPerson).rest.get(lastPerson);
+const finalNode = new Node(lastPerson, cost, result);
+finalNode.setCost = finalNode.getPrevious.getCost + cost; //so we accumulate the cost between the last node and the previous of it (to connect them at the end of the search).
+printPath(finalNode);
 function printPath(result) {
   result.setCost = (result.getCost + betweenFirstAndLast) * 100;
-  console.log(`Total Cost: ${result.getCost.toFixed(2)}`);
+  console.log(`------Total Cost: ${result.getCost.toFixed(0)}`);
   let currentNode = result;
   const path = [];
-  while (currentNode !== null) {
+  while (currentNode) {
     path.push(currentNode.getPerson);
     currentNode = currentNode.getPrevious;
   }
+  console.log("------Path is: ");
   while (path.length !== 0) {
     console.log(path.pop());
   }
