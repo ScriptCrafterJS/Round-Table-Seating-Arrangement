@@ -49,8 +49,11 @@ function greedySearch(firstPerson, lastPerson) {
 }
 
 let firstPerson = "Ahmed";
-let lastPerson = "Kamal";
-
+let lastPerson = "Fuad";
+if (firstPerson === lastPerson) {
+  console.log("Total Cost is: 0");
+  return;
+}
 let result = greedySearch(firstPerson, lastPerson);
 //cost Between Final And BeforeFinal
 const cost = graph.get(result.getPerson).rest.get(lastPerson);

@@ -34,11 +34,13 @@ function greedySearch(firstPerson, lastPerson) {
       if (!frontier.contains(neighborName) && !explored.has(neighborName)) {
         if (neighborName !== lastPerson) {
           const cost = neighborCost + currentCost;
+
           const neighbor = new Node(
             neighborName,
             cost,
             currentNode //the previous of the neighbor node
           );
+
           frontier.insert(neighbor);
         }
       }
@@ -48,13 +50,20 @@ function greedySearch(firstPerson, lastPerson) {
 }
 
 let firstPerson = "Ahmed";
-let lastPerson = "Kamal";
-
+let lastPerson = "Fuad";
+if (firstPerson === lastPerson) {
+  console.log("Total Cost is: 0");
+  return;
+}
 let result = greedySearch(firstPerson, lastPerson);
+
 //cost Between Final And BeforeFinal
 const cost = graph.get(result.getPerson).rest.get(lastPerson);
+
 const finalNode = new Node(lastPerson, cost, result);
+
 finalNode.setCost = finalNode.getPrevious.getCost + cost; //so we accumulate the cost between the last node and the previous of it (to connect them at the end of the search).
+
 printPath(finalNode);
 function printPath(result) {
   result.setCost = (result.getCost + betweenFirstAndLast) * 100;

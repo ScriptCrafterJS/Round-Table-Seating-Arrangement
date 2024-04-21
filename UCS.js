@@ -32,8 +32,8 @@ function greedySearch(firstPerson, lastPerson) {
 
     for (let [neighborName, neighborCost] of neighborsMap) {
       if (!frontier.contains(neighborName) && !explored.has(neighborName)) {
+        const cost = neighborCost ** 2 + currentCost;
         if (neighborName !== lastPerson) {
-          const cost = neighborCost ** 2 + currentCost;
           const neighbor = new Node(
             neighborName,
             cost,
@@ -48,8 +48,11 @@ function greedySearch(firstPerson, lastPerson) {
 }
 
 let firstPerson = "Ahmed";
-let lastPerson = "Kamal";
-
+let lastPerson = "Fuad";
+if (firstPerson === lastPerson) {
+  console.log("Total Cost is: 0");
+  return;
+}
 let result = greedySearch(firstPerson, lastPerson);
 //cost Between Final And BeforeFinal
 const cost = graph.get(result.getPerson).rest.get(lastPerson);
